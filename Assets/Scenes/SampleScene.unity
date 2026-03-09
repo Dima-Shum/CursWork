@@ -1032,6 +1032,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9792617a2c60c04cac4c3a77c052d21, type: 3}
+--- !u!1 &1408095303 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 672082386501777617, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
+  m_PrefabInstance: {fileID: 4283040827866285260}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1453104362 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3709633829228178056, guid: 7e4700e8daa23a743a3fecc844920c11, type: 3}
@@ -1528,6 +1533,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1680368252}
     m_Modifications:
+    - target: {fileID: 2851781325167420549, guid: 62ac1133b0ca6204d85ae0ceba1fe8ed, type: 3}
+      propertyPath: _damageAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3500898041189261679, guid: 62ac1133b0ca6204d85ae0ceba1fe8ed, type: 3}
       propertyPath: m_Name
       value: Sword
@@ -1658,6 +1667,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Skeleton
       objectReference: {fileID: 0}
+    - target: {fileID: 387328594572961215, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
+      propertyPath: _enemySO
+      value: 
+      objectReference: {fileID: 11400000, guid: 0bc6cd2703bf56a428d9042bfd1f80da, type: 2}
     - target: {fileID: 2174684685630193246, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.37
@@ -1742,6 +1755,10 @@ PrefabInstance:
       propertyPath: _enemyAI
       value: 
       objectReference: {fileID: 1794362090}
+    - target: {fileID: 8168626318878811725, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
+      propertyPath: _enemyShadow
+      value: 
+      objectReference: {fileID: 1408095303}
     - target: {fileID: 8204871462834229605, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: m_IsTrigger
       value: 1

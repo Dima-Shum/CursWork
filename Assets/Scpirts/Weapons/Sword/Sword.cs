@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    [SerializeField] private int _damageAmount = 2;
+    [SerializeField] private int _damageAmount = 1;
 
     public event EventHandler OnSwordSwing;
 

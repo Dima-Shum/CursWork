@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private bool _isAttackingEnemy = false;
     [SerializeField] private float _attackingDistance = 2f;
-    [SerializeField] private float _attackRate = 2f;
+    [SerializeField] private float _attackRate = 0.5f;
     private float _nextAttackTime = 0f;
 
 

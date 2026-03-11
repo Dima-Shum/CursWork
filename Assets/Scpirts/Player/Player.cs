@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.Mathematics.Geometry;
 using Unity.VisualScripting;
@@ -10,27 +11,81 @@ public class Player : MonoBehaviour
 {
     public static Player instance {  get; private set; }
 
-    private Rigidbody2D rb;
+    public event EventHandler OnPlayerDeath;
 
+    [SerializeField] private int _maxHealth = 10;
 
-    private float movingSpeed = 5f;
+    [SerializeField] private float _damageRecoveryTime = 0.5f;
 
-     Vector2 inputVector;
+    [SerializeField] private float _movingSpeed = 5f;
 
-    private float MinMovingSpeed = 0.1f;
-    private bool isRunning = false;
+    private float _MinMovingSpeed = 0.1f;
+
+    private Rigidbody2D _rb;
+
+    private KnockBack _knockBack;
+
+    Vector2 inputVector;
+
+    private bool _isRunning = false;
+
+    private int _currentHealth;
+    private bool _canTakeDamage;
+    private bool _isAlive;
 
     private void Awake()
     {
         instance = this;
-        rb = GetComponent<Rigidbody2D>();
-
-        
+        _rb = GetComponent<Rigidbody2D>();
+        _knockBack = GetComponent<KnockBack>();   
     }
 
     private void Start()
     {
+        _isAlive = true;
+        _currentHealth = _maxHealth; 
+        _canTakeDamage = true;
         GameInput.instance.OnPlayerAttack += Player_OnPlayerAttack;
+    }
+
+    public void TakeDamage(Transform damageSource, int damage)
+    {
+        if(_canTakeDamage && _isAlive)
+        {
+            _canTakeDamage = false;
+            _currentHealth = System.Math.Max(0, _currentHealth -= damage);
+            Debug.Log(_currentHealth);
+            _knockBack.GetKnockedBack(damageSource);
+
+            StartCoroutine(DamageRecoveryRoutine());
+        }
+
+        DetectDeath();
+    }
+
+    public bool IsAlive()
+    {
+        return _isAlive;
+    }
+
+    private void DetectDeath()
+    {
+        if (_currentHealth == 0 && _isAlive)
+        {
+            _isAlive=false; 
+            _knockBack.StopKnockBackMovement();
+            OnPlayerDeath?.Invoke(this, EventArgs.Empty);
+            GameInput.instance.DisableMovement();
+
+
+        }
+           
+    }
+
+    private IEnumerator DamageRecoveryRoutine()
+    {
+        yield return new WaitForSeconds(_damageRecoveryTime);
+        _canTakeDamage = true;
     }
 
     private void Player_OnPlayerAttack(object sender, EventArgs e)
@@ -45,29 +100,33 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(_knockBack.IsGettingKnockBack)
+            return;
+
        HandleMovement();
     }
+
 
     private void HandleMovement()
     {
         
 
-        rb.MovePosition(rb.position + inputVector * (movingSpeed * Time.fixedDeltaTime));
+        _rb.MovePosition(_rb.position + inputVector * (_movingSpeed * Time.fixedDeltaTime));
 
-        if(Mathf.Abs(inputVector.x) > MinMovingSpeed || Mathf.Abs(inputVector.y) > MinMovingSpeed)
+        if(Mathf.Abs(inputVector.x) > _MinMovingSpeed || Mathf.Abs(inputVector.y) > _MinMovingSpeed)
         {
-            isRunning = true;
+            _isRunning = true;
         }
 
         else
         {
-            isRunning = false;
+            _isRunning = false;
         }      
     }
 
     public bool IsRunning()
     {
-        return isRunning;
+        return _isRunning;
     }
 
     public Vector3 GetPlayerScreenPosition()

@@ -540,7 +540,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -565,8 +565,8 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -25}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -772,6 +772,7 @@ GameObject:
   - component: {fileID: 1243894032}
   - component: {fileID: 1243894033}
   - component: {fileID: 1243894034}
+  - component: {fileID: 1243894035}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -788,7 +789,7 @@ Transform:
   m_GameObject: {fileID: 1243894028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.27, y: 3.06, z: 0}
+  m_LocalPosition: {x: 6.39, y: -3.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -808,6 +809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e61e685b6bddc04f8ba3b91872a3da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  _maxHealth: 10
+  _damageRecoveryTime: 0.5
+  _movingSpeed: 5
 --- !u!50 &1243894032
 Rigidbody2D:
   serializedVersion: 5
@@ -918,6 +922,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.7355478, y: 1.7366884}
   m_EdgeRadius: 0
+--- !u!114 &1243894035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243894028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4ddcaa68a2097f4f8f80cf3b6f77fec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnockBack
+  _knockBackForce: 2.5
+  _knockBackMovingTimerMax: 0.3
 --- !u!1001 &1271610736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1671,6 +1689,10 @@ PrefabInstance:
       propertyPath: _enemySO
       value: 
       objectReference: {fileID: 11400000, guid: 0bc6cd2703bf56a428d9042bfd1f80da, type: 2}
+    - target: {fileID: 935261816619135196, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2174684685630193246, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.37
@@ -1713,7 +1735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2507644389630621415, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: _attackRate
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2507644389630621415, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: _startingState
@@ -1733,7 +1755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2507644389630621415, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: _attackingDistance
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2507644389630621415, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: _roamingDistanceMax
@@ -1747,6 +1769,10 @@ PrefabInstance:
       propertyPath: _chasingSpeedMultiplier
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4841892558868011439, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1841294978, guid: feae43d5a3f15814e816207d6ed0b88d, type: 3}
     - target: {fileID: 6617160727295362435, guid: b57649fda43fc6c4ca17fc94fe7de508, type: 3}
       propertyPath: m_Enabled
       value: 0

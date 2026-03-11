@@ -5,7 +5,7 @@ using System;
 public class GameInput : MonoBehaviour
 {
 
-    private PlayerInputActions PlayerInputActions;
+    private PlayerInputActions _PlayerInputActions;
 
     public static GameInput instance {  get; private set; }
 
@@ -14,20 +14,16 @@ public class GameInput : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        PlayerInputActions = new PlayerInputActions();
-        PlayerInputActions.Enable();
-        PlayerInputActions.combat.Attack.started += PlayerAttack_started;
+        _PlayerInputActions = new PlayerInputActions();
+        _PlayerInputActions.Enable();
+        _PlayerInputActions.combat.Attack.started += PlayerAttack_started;
     }
 
 
-    private void PlayerAttack_started(InputAction.CallbackContext obj)
-    {
-        
-        OnPlayerAttack?.Invoke(this, EventArgs.Empty);
-    }
+   
     public Vector2 GetMovementVector()
     {
-        Vector2 InputVector = PlayerInputActions.Player.Move.ReadValue<Vector2>();
+        Vector2 InputVector = _PlayerInputActions.Player.Move.ReadValue<Vector2>();
 
         return InputVector;
     }
@@ -36,5 +32,16 @@ public class GameInput : MonoBehaviour
     {
         Vector3 MousePos = Mouse.current.position.ReadValue();
         return MousePos;
+    }
+
+    public void DisableMovement()
+    {
+        _PlayerInputActions.Disable();
+    }
+
+    private void PlayerAttack_started(InputAction.CallbackContext obj)
+    {
+
+        OnPlayerAttack?.Invoke(this, EventArgs.Empty);
     }
 }

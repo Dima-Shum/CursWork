@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public static Player instance {  get; private set; }
 
     public event EventHandler OnPlayerDeath;
+    public event EventHandler OnFlashBlink;
 
     [SerializeField] private int _maxHealth = 10;
 
@@ -56,6 +57,8 @@ public class Player : MonoBehaviour
             _currentHealth = System.Math.Max(0, _currentHealth -= damage);
             Debug.Log(_currentHealth);
             _knockBack.GetKnockedBack(damageSource);
+
+            OnFlashBlink?.Invoke(this, EventArgs.Empty);
 
             StartCoroutine(DamageRecoveryRoutine());
         }

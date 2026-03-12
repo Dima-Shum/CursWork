@@ -37,14 +37,14 @@ public class EnemyAI : MonoBehaviour
 
     public event EventHandler OnEnemyAttack;
 
-   
 
-    public EnemyAI (State state)
+
+    public EnemyAI(State state)
     {
         _currentState = state;
     }
 
-    
+
 
     public enum State
     {
@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void Awake()
-    {  
+    {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
         _navMeshAgent.updateUpAxis = false;
@@ -69,7 +69,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        
+
         StateHandler();
         MovementDirectionHandler();
     }
@@ -116,7 +116,7 @@ public class EnemyAI : MonoBehaviour
 
     private void AttackingTarget()
     {
-       if(Time.time > _nextAttackTime)
+        if (Time.time > _nextAttackTime)
         {
             OnEnemyAttack?.Invoke(this, EventArgs.Empty);
             _nextAttackTime = Time.time + _attackRate;
@@ -125,13 +125,13 @@ public class EnemyAI : MonoBehaviour
 
     private void MovementDirectionHandler()
     {
-        if(Time.time > _nextCheckDirectionTime)
+        if (Time.time > _nextCheckDirectionTime)
         {
-            if(IsRunning())
+            if (IsRunning())
             {
                 ChangeFacingDirection(_lastPosition, transform.position);
             }
-            else if(_currentState == State.Attacking)
+            else if (_currentState == State.Attacking)
             {
                 ChangeFacingDirection(transform.position, Player.instance.transform.position);
             }
@@ -150,40 +150,44 @@ public class EnemyAI : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, Player.instance.transform.position);
         State newState = State.Roaming;
-        if(_isChasingEnemy)
+        if (_isChasingEnemy)
         {
-            if(distanceToPlayer <= _chasingDistance)
+            if (distanceToPlayer <= _chasingDistance)
             {
                 newState = State.Chasing;
             }
         }
 
-        if(_isAttackingEnemy)
-            if(distanceToPlayer <= _attackingDistance)
+        if (_isAttackingEnemy)
+            if (distanceToPlayer <= _attackingDistance)
             {
-                newState = State.Attacking;
+                if (Player.instance.IsAlive())
+                    newState = State.Attacking;
+
+                else
+                    newState = State.Roaming;
             }
 
-        if(newState != _currentState)
+        if (newState != _currentState)
         {
-            if(newState == State.Chasing)
+            if (newState == State.Chasing)
             {
                 _navMeshAgent.ResetPath();
                 _navMeshAgent.speed = _chasingSpeed;
             }
 
-            else if(newState == State.Roaming)
+            else if (newState == State.Roaming)
             {
                 _roamingTimer = 0f;
                 _navMeshAgent.speed = _roamingSpeed;
-                
+
             }
 
-            else if( newState == State.Attacking)
+            else if (newState == State.Attacking)
             {
                 _navMeshAgent.ResetPath();
             }
-                _currentState = newState; 
+            _currentState = newState;
         }
     }
 
@@ -194,7 +198,7 @@ public class EnemyAI : MonoBehaviour
 
     public bool IsRunning()
     {
-        if(_navMeshAgent.velocity ==  Vector3.zero)
+        if (_navMeshAgent.velocity == Vector3.zero)
             return false;
         else
         {
@@ -215,13 +219,6 @@ public class EnemyAI : MonoBehaviour
 
     private void ChangeFacingDirection(Vector3 sourcePosition, Vector3 targetPosition)
     {
-        if(sourcePosition.x > targetPosition.x)
-        {
-            transform.rotation = Quaternion.Euler(0, -180, 0);
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
+        transform.rotation = sourcePosition.x > targetPosition.x ? Quaternion.Euler(0, -180, 0) : Quaternion.Euler(0, 0, 0);
     }
 }

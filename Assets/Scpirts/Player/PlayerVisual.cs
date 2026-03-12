@@ -9,6 +9,7 @@ public class PlayerVisual : MonoBehaviour
     private const string IS_DIE = "IsDie";
 
     private SpriteRenderer SpriteRenderer;
+    private FlashBlink _flashBlink;
 
 
     private void Start()
@@ -19,12 +20,14 @@ public class PlayerVisual : MonoBehaviour
     private void Player_OnPlayerDeath(object sender, EventArgs e)
     {
        animator.SetBool(IS_DIE, true);
+        _flashBlink.StopBlinking();
     }
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         SpriteRenderer = GetComponent<SpriteRenderer>();
+        _flashBlink = GetComponent<FlashBlink>();
     }
 
     private void Update()

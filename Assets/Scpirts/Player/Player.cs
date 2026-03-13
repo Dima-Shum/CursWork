@@ -137,4 +137,9 @@ public class Player : MonoBehaviour
         Vector3 PlayerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);  
         return PlayerScreenPosition;    
     }
+
+    private void OnDestroy()
+    {
+        GameInput.instance.OnPlayerAttack -= Player_OnPlayerAttack;
+    }
 }

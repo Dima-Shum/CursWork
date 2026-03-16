@@ -21,6 +21,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float _attackRate = 0.5f;
     private float _nextAttackTime = 0f;
 
+    private Rigidbody2D _rb;
+
 
     private NavMeshAgent _navMeshAgent;
     private State _currentState;
@@ -62,6 +64,7 @@ public class EnemyAI : MonoBehaviour
         _navMeshAgent.updateRotation = false;
         _navMeshAgent.updateUpAxis = false;
         _currentState = _startingState;
+        _rb = GetComponent<Rigidbody2D>();
 
         _roamingSpeed = _navMeshAgent.speed;
         _chasingSpeed = _navMeshAgent.speed * _chasingSpeedMultiplier;
@@ -77,6 +80,8 @@ public class EnemyAI : MonoBehaviour
     {
         _navMeshAgent.ResetPath();
         _currentState = State.Death;
+        _rb.linearVelocity = Vector2.zero; 
+        _rb.angularVelocity = 0f;
     }
     private void StateHandler()
     {

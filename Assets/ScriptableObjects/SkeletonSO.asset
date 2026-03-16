@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SkeletonSO
   m_EditorClassIdentifier: Assembly-CSharp::EnemySO
   enemyName: Skeleton
-  enemyHealth: 15
+  enemyHealth: 35
   enemyDamageAmount: 1

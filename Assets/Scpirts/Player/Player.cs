@@ -14,11 +14,23 @@ public class Player : MonoBehaviour
     public event EventHandler OnPlayerDeath;
     public event EventHandler OnFlashBlink;
 
+    [Header("Main settings")]
+
     [SerializeField] private int _maxHealth = 10;
 
     [SerializeField] private float _damageRecoveryTime = 0.5f;
 
     [SerializeField] private float _movingSpeed = 5f;
+
+    [Header("Dash settings")]
+
+    [SerializeField] private float _dashTime = 0.2f;
+
+    [SerializeField] private int _dashSpeed = 4;
+
+    [SerializeField] private TrailRenderer trailRenderer;
+
+    [SerializeField] private float _dashCoolDownTime = 0.25f;
 
     private float _MinMovingSpeed = 0.1f;
 
@@ -31,14 +43,21 @@ public class Player : MonoBehaviour
     private bool _isRunning = false;
 
     private int _currentHealth;
+
     private bool _canTakeDamage;
+
     private bool _isAlive;
+
+    private bool _isDashing;
+
+    private float _initialMovingSpeed;
 
     private void Awake()
     {
         instance = this;
         _rb = GetComponent<Rigidbody2D>();
-        _knockBack = GetComponent<KnockBack>();   
+        _knockBack = GetComponent<KnockBack>();  
+        _initialMovingSpeed = _movingSpeed;
     }
 
     private void Start()
@@ -47,7 +66,10 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth; 
         _canTakeDamage = true;
         GameInput.instance.OnPlayerAttack += Player_OnPlayerAttack;
+        GameInput.instance.OnPlayerDash += Player_OnPlayerDash;
     }
+
+    
 
     public void TakeDamage(Transform damageSource, int damage)
     {
@@ -59,7 +81,6 @@ public class Player : MonoBehaviour
             _knockBack.GetKnockedBack(damageSource);
 
             OnFlashBlink?.Invoke(this, EventArgs.Empty);
-
             StartCoroutine(DamageRecoveryRoutine());
         }
 
@@ -94,6 +115,32 @@ public class Player : MonoBehaviour
     private void Player_OnPlayerAttack(object sender, EventArgs e)
     {
         ActiveWeapon.Instance.GetActiveWeapon().Attack();
+    }
+
+    private void Player_OnPlayerDash(object sender, EventArgs e)
+    {
+        Dash();
+    }
+
+    private void Dash()
+    {
+        if(!_isDashing) 
+            StartCoroutine(DashRoutine());
+    }
+
+    private IEnumerator DashRoutine()
+    {
+        _isDashing = true;
+        _movingSpeed *= _dashSpeed;
+        trailRenderer.emitting = true;
+        yield return new WaitForSeconds(_dashTime);
+
+        trailRenderer.emitting = false;
+        _movingSpeed = _initialMovingSpeed;
+
+        yield return new WaitForSeconds(_dashCoolDownTime);
+        _isDashing = false;
+        
     }
 
     private void Update()

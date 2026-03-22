@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2946049906997522351}
   - component: {fileID: 8942020884166372159}
   - component: {fileID: 2221684659658181831}
+  - component: {fileID: -5334801966701046332}
+  - component: {fileID: -5604608669488589249}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -127,8 +129,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.01663973, y: 0.14969566}
-  m_Size: {x: 1.8440092, y: 0.4488906}
+  m_Offset: {x: 0.016639726, y: 0.12190583}
+  m_Size: {x: 1.8440096, y: 0.39331213}
   m_Direction: 1
 --- !u!114 &2221684659658181831
 MonoBehaviour:
@@ -146,3 +148,54 @@ MonoBehaviour:
   m_Center: {x: 0.025316477, y: 0.14681476, z: 0}
   m_Area: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &-5334801966701046332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8079073348058846494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4679c08fb6912244aae50cde0e135937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::T
+  TrancperencyAmount: 0.79999995
+  FadeTime: 0.5
+--- !u!70 &-5604608669488589249
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8079073348058846494}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.013441281, y: 1.6235123}
+  m_Size: {x: 2.9881632, y: 2.5232084}
+  m_Direction: 1

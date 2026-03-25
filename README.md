@@ -32,3 +32,7 @@ Shadow of the Skeleton: Dungeon Crusade — это динамичная 2D top-d
 
 Язык: C#
 
+Скриншоты:
+<img width="1262" height="699" alt="image" src="https://github.com/user-attachments/assets/f718a3fa-1102-4570-ad43-1275acc9d153" />
+
+

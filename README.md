@@ -50,3 +50,7 @@ W, A, S, D ИЛИ стрелки
 <img width="1262" height="699" alt="image" src="https://github.com/user-attachments/assets/f718a3fa-1102-4570-ad43-1275acc9d153" />
 
 
+Главное меню:
+
+<img width="559" height="499" alt="image" src="https://github.com/user-attachments/assets/26422846-cb50-429c-baff-d0080509d372" />
+

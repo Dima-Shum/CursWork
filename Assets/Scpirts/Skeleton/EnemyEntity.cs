@@ -13,7 +13,6 @@ public class EnemyEntity : MonoBehaviour
     public event EventHandler OnTakeHit;
     public event EventHandler OnDeath;
 
-    //[SerializeField] private int _maxHealth;
     private int _currentHealth;
 
     private PolygonCollider2D _polygonCollider2D;

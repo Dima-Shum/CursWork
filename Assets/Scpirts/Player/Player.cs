@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     [Header("Main settings")]
 
-    [SerializeField] private int _maxHealth = 10;
+    [SerializeField] public int _maxHealth = 10;
 
     [SerializeField] private float _damageRecoveryTime = 0.5f;
 
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
 
     private bool _isRunning = false;
 
-    private int _currentHealth;
+    public int _currentHealth;
 
     private bool _canTakeDamage;
 

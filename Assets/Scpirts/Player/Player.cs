@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _dashCoolDownTime = 0.25f;
 
+    private GameObject _losePanel;
+
     private float _MinMovingSpeed = 0.1f;
 
     private Rigidbody2D _rb;
@@ -66,6 +68,13 @@ public class Player : MonoBehaviour
         _canTakeDamage = true;
         GameInput.instance.OnPlayerAttack += Player_OnPlayerAttack;
         GameInput.instance.OnPlayerDash += Player_OnPlayerDash;
+
+        _losePanel = GameObject.Find("losePanel");
+        if (_losePanel != null)
+        {
+            _losePanel.SetActive(false);
+            Debug.Log("ѕанель поражени€ скрыта при старте");
+        }
     }
 
     
@@ -99,6 +108,7 @@ public class Player : MonoBehaviour
             _knockBack.StopKnockBackMovement();
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
             GameInput.instance.DisableMovement();
+            ShowLose();
 
 
         }
@@ -187,5 +197,24 @@ public class Player : MonoBehaviour
     private void OnDestroy()
     {
         GameInput.instance.OnPlayerAttack -= Player_OnPlayerAttack;
+    }
+
+    private void ShowLose()
+    {
+        if (_losePanel != null)
+        {
+            _losePanel.SetActive(true);
+            StartCoroutine(ReturnToMenu());
+        }
+        else
+        {
+            Debug.LogError("—сылка на losePanel потер€на!");
+        }
+    }
+
+    private IEnumerator ReturnToMenu()
+    {
+        yield return new WaitForSeconds(3f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MenuScene");
     }
 }

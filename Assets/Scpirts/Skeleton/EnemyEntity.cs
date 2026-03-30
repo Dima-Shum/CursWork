@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 
 [RequireComponent (typeof(PolygonCollider2D))]
@@ -12,6 +14,8 @@ public class EnemyEntity : MonoBehaviour
 
     public event EventHandler OnTakeHit;
     public event EventHandler OnDeath;
+  
+    private GameObject _victoryPanel;
 
     private int _currentHealth;
 
@@ -28,6 +32,13 @@ public class EnemyEntity : MonoBehaviour
     private void Start()
     {
         _currentHealth = _enemySO.enemyHealth;
+
+        _victoryPanel = GameObject.Find("victoryPanel");
+        if (_victoryPanel != null)
+        {
+            _victoryPanel.SetActive(false);
+            Debug.Log("ѕанель победы скрыта при старте");
+        }
     }
 
 
@@ -57,7 +68,7 @@ public class EnemyEntity : MonoBehaviour
 
     private void DetectDeath()
     {
-        if(_currentHealth <= 0)
+        if (_currentHealth <= 0)
         {
             _boxCollider2D.enabled = false;
             _polygonCollider2D.enabled = false;
@@ -65,8 +76,33 @@ public class EnemyEntity : MonoBehaviour
             _enemyAI.SetDeathState();
 
             OnDeath?.Invoke(this, EventArgs.Empty);
-        }      
+
+            if(gameObject.CompareTag("Boss"))
+            {
+                ShowVictory();
+            }
+
+        }
     }
 
-   
+    private void ShowVictory()
+    {
+        if (_victoryPanel != null)
+        {
+            _victoryPanel.SetActive(true);
+            StartCoroutine(ReturnToMenu());
+        }
+        else
+        {
+            Debug.LogError("—сылка на victoryPanel потер€на!");
+        }
+    }
+
+    private IEnumerator ReturnToMenu()
+    {
+        yield return new WaitForSeconds(3f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MenuScene");
+    }
+
+
 }

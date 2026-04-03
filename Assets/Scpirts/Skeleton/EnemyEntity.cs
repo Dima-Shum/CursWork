@@ -87,14 +87,33 @@ public class EnemyEntity : MonoBehaviour
 
     private void ShowVictory()
     {
-        if (_victoryPanel != null)
+        // Ищем через Canvas (как в диагностике)
+        Canvas canvas = FindObjectOfType<Canvas>();
+        if (canvas != null)
         {
-            _victoryPanel.SetActive(true);
+            Transform winContainer = canvas.transform.Find("WinContainer");
+            if (winContainer != null)
+            {
+                Transform victoryPanelTransform = winContainer.Find("victoryPanel");
+                if (victoryPanelTransform != null)
+                {
+                    victoryPanelTransform.gameObject.SetActive(true);
+                    StartCoroutine(ReturnToMenu());
+                    return;
+                }
+            }
+        }
+
+        // Если не нашли через путь - пробуем старый способ
+        GameObject victoryPanel = GameObject.Find("victoryPanel");
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
             StartCoroutine(ReturnToMenu());
         }
         else
         {
-            Debug.LogError("Ссылка на victoryPanel потеряна!");
+            Debug.LogError("victoryPanel не найден!");
         }
     }
 

@@ -1,7 +1,8 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 
 [RequireComponent (typeof(PolygonCollider2D))]
@@ -72,22 +73,34 @@ public class EnemyEntity : MonoBehaviour
         {
             _boxCollider2D.enabled = false;
             _polygonCollider2D.enabled = false;
-
             _enemyAI.SetDeathState();
-
             OnDeath?.Invoke(this, EventArgs.Empty);
 
-            if(gameObject.CompareTag("Boss"))
-            {
-                ShowVictory();
-            }
+            // Добавляем убийство для ЛЮБОГО врага (включая босса?)
+            KillCounter.instance.AddKill();
 
+            if (gameObject.CompareTag("Boss"))
+            {
+                // Получаем время и убийства
+                string victoryTime = GameTimer.instance.GetFormattedTime(); // нужно добавить этот метод в GameTimer
+                string victoryKills = KillCounter.instance.GetKillCount().ToString();
+
+                // Показываем панель и заполняем текст
+                ShowVictory(victoryTime, victoryKills);
+            }
         }
     }
 
-    private void ShowVictory()
+    private void ShowVictory(string time, string kills)
     {
-        // Ищем через Canvas (как в диагностике)
+        // Сохраняем данные
+        GlobalGameData.GameResult = "Victory";
+        GlobalGameData.FinalTime = time;
+        GlobalGameData.FinalKills = kills;
+
+        // Выводим в консоль
+        Debug.Log($"=== РЕЗУЛЬТАТ ИГРЫ ===\nИгрок: {GlobalGameData.PlayerName}\nСтатус: {GlobalGameData.GameResult}\nВремя: {GlobalGameData.FinalTime}\nУбийств: {GlobalGameData.FinalKills}");
+        StatsManager.Instance.SaveCurrentSession("Victory", time, kills);
         Canvas canvas = FindObjectOfType<Canvas>();
         if (canvas != null)
         {
@@ -97,6 +110,12 @@ public class EnemyEntity : MonoBehaviour
                 Transform victoryPanelTransform = winContainer.Find("victoryPanel");
                 if (victoryPanelTransform != null)
                 {
+                    TMP_Text timeText = victoryPanelTransform.Find("victoryTime")?.GetComponent<TMP_Text>();
+                    if (timeText != null) timeText.text = $"Time: {time}";
+
+                    TMP_Text killsText = victoryPanelTransform.Find("victoryKills")?.GetComponent<TMP_Text>();
+                    if (killsText != null) killsText.text = $"Kills: {kills}";
+
                     victoryPanelTransform.gameObject.SetActive(true);
                     StartCoroutine(ReturnToMenu());
                     return;
@@ -104,19 +123,20 @@ public class EnemyEntity : MonoBehaviour
             }
         }
 
-        // Если не нашли через путь - пробуем старый способ
+        // Fallback
         GameObject victoryPanel = GameObject.Find("victoryPanel");
         if (victoryPanel != null)
         {
+            TMP_Text timeText = victoryPanel.transform.Find("victoryTime")?.GetComponent<TMP_Text>();
+            if (timeText != null) timeText.text = $"Time: {time}";
+
+            TMP_Text killsText = victoryPanel.transform.Find("victoryKills")?.GetComponent<TMP_Text>();
+            if (killsText != null) killsText.text = $"Kills: {kills}";
+
             victoryPanel.SetActive(true);
             StartCoroutine(ReturnToMenu());
         }
-        else
-        {
-            Debug.LogError("victoryPanel не найден!");
-        }
     }
-
     private IEnumerator ReturnToMenu()
     {
         yield return new WaitForSeconds(3f);

@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.Mathematics.Geometry;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -104,15 +105,16 @@ public class Player : MonoBehaviour
     {
         if (_currentHealth == 0 && _isAlive)
         {
-            _isAlive=false; 
+            _isAlive = false;
             _knockBack.StopKnockBackMovement();
             OnPlayerDeath?.Invoke(this, EventArgs.Empty);
             GameInput.instance.DisableMovement();
-            ShowLose();
 
+            string loseTime = GameTimer.instance.GetFormattedTime();
+            string loseKills = KillCounter.instance.GetKillCount().ToString();
 
+            ShowLose(loseTime, loseKills);
         }
-           
     }
 
     private IEnumerator DamageRecoveryRoutine()
@@ -199,16 +201,26 @@ public class Player : MonoBehaviour
         GameInput.instance.OnPlayerAttack -= Player_OnPlayerAttack;
     }
 
-    private void ShowLose()
+    private void ShowLose(string time, string kills)
     {
+        // Сохраняем данные
+        GlobalGameData.GameResult = "Lose";
+        GlobalGameData.FinalTime = time;
+        GlobalGameData.FinalKills = kills;
+
+        // Выводим в консоль
+        Debug.Log($"=== РЕЗУЛЬТАТ ИГРЫ ===\nИгрок: {GlobalGameData.PlayerName}\nСтатус: {GlobalGameData.GameResult}\nВремя: {GlobalGameData.FinalTime}\nУбийств: {GlobalGameData.FinalKills}");
+
         if (_losePanel != null)
         {
+            TMP_Text timeText = _losePanel.transform.Find("loseTime")?.GetComponent<TMP_Text>();
+            if (timeText != null) timeText.text = $"Time: {time}";
+
+            TMP_Text killsText = _losePanel.transform.Find("loseKills")?.GetComponent<TMP_Text>();
+            if (killsText != null) killsText.text = $"Kills: {kills}";
+
             _losePanel.SetActive(true);
             StartCoroutine(ReturnToMenu());
-        }
-        else
-        {
-            Debug.LogError("Ссылка на losePanel потеряна!");
         }
     }
 

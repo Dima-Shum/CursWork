@@ -12,8 +12,10 @@ public class NonStartWithoutName : MonoBehaviour
         inputName.onValueChanged.AddListener(NameForStart);
         StartGame.interactable = false;
     }
+
     public void NameForStart(string newText)
     {
         StartGame.interactable = !string.IsNullOrEmpty(newText);
+        GlobalGameData.PlayerName = newText;
     }
 }

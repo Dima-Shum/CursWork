@@ -207,6 +207,7 @@ public class Player : MonoBehaviour
         GlobalGameData.GameResult = "Lose";
         GlobalGameData.FinalTime = time;
         GlobalGameData.FinalKills = kills;
+        StatsManager.Instance.SaveCurrentSession("Lose", time, kills);
 
         // Выводим в консоль
         Debug.Log($"=== РЕЗУЛЬТАТ ИГРЫ ===\nИгрок: {GlobalGameData.PlayerName}\nСтатус: {GlobalGameData.GameResult}\nВремя: {GlobalGameData.FinalTime}\nУбийств: {GlobalGameData.FinalKills}");

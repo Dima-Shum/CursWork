@@ -97,10 +97,10 @@ public class EnemyEntity : MonoBehaviour
         GlobalGameData.GameResult = "Victory";
         GlobalGameData.FinalTime = time;
         GlobalGameData.FinalKills = kills;
+        StatsManager.Instance.SaveCurrentSession("Victory", time, kills);
 
         // Выводим в консоль
         Debug.Log($"=== РЕЗУЛЬТАТ ИГРЫ ===\nИгрок: {GlobalGameData.PlayerName}\nСтатус: {GlobalGameData.GameResult}\nВремя: {GlobalGameData.FinalTime}\nУбийств: {GlobalGameData.FinalKills}");
-        StatsManager.Instance.SaveCurrentSession("Victory", time, kills);
         Canvas canvas = FindObjectOfType<Canvas>();
         if (canvas != null)
         {
